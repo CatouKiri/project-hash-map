@@ -38,24 +38,26 @@ class HashMap {
     const index = this.hash(key);
     const bucket = this.buckets[index];
     const newNode = new Node(key, value);
+    let current = this.buckets[index][0];
 
-    if (!bucket.length) { // check if bucket is empty
+    if (!current) { // check if bucket is empty
       bucket.push(newNode);
       return;
     }
 
-    for (let node of bucket) { // check if the key already exists in the bucket
-      if (node.key === key) {
-        node.value = value; // update value if key exists
+    while (current) {
+      if(current.key === key) { // if key is already existing, update value
+        current.value = value;
         return;
       }
-    }
 
-    let current = this.buckets[index][0];
-    while (current.next) { // if bucket is not empty, push new node to next linked list
+      if(!current.next) { // if bucket is not empty, push new node to next linked list
+        current.next = newNode;
+        return;
+      }
+
       current = current.next;
     }
-    current.next = newNode;
   }
 
   // get(key)
@@ -81,6 +83,7 @@ test.set('ice cream', 'white')
 test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
+test.set('lion', 'edited')
 
 console.log(test);
 // console.log(`the value of the key hat is ${test.get('hat')}`);
