@@ -60,7 +60,21 @@ class HashMap {
     }
   }
 
-  // get(key)
+  get(key) {
+    const index = this.hash(key);
+    let current = this.buckets[index][0];
+
+    while (current) {
+      if(current.key === key) { // if key is already existing, return value
+        return current.value;
+      }
+
+      current = current.next;
+    }
+
+    return null; // if key doesn't exist, return null
+  }
+
   // has(key)
   // remove(key)
   // length()
@@ -86,6 +100,7 @@ test.set('lion', 'golden')
 test.set('lion', 'edited')
 
 console.log(test);
-// console.log(`the value of the key hat is ${test.get('hat')}`);
+console.log(`the value of the "key" hat is ${test.get('hat')}`);
+console.log(`the value of the "key" rock is ${test.get('rock')}`);
 // console.log(`the hash map has the key carrot: ${test.has('carrot')}`);
 // console.log(`the hash map has the key rock: ${test.has('rock')}`);
