@@ -1,5 +1,4 @@
 const capacity = 16;
-const loadFactor = 0.75;
 
 class Node {
   constructor(key, value) {
@@ -16,6 +15,10 @@ class HashMap {
     for (let i = 0; i < capacity; i++) {
       this.buckets[i] = [];
     }
+  }
+
+  loadFactor() {
+    return this.length / capacity;
   }
 
   outOfBounds(index, buckets) {
@@ -120,26 +123,65 @@ class HashMap {
     return this.length;
   }
 
-  // clear()
-  // keys()
-  // values()
-  // entries()
+  clear() {
+    for (let i = 0; i < capacity; i++) {
+      this.buckets[i] = [];  // Replace each bucket with a new empty list
+    }
+    this.length = 0; // Reset length after clearing
+  }
+
+  keys() {
+    let keysArray = [];
+    for (let i = 0; i < capacity; i++) {
+      let current = this.buckets[i][0];
+      while (current) {
+        keysArray.push(current.key);
+        current = current.next;
+      }
+    }
+    return keysArray;
+  }
+
+  values() {
+    let valuesArray = [];
+    for (let i = 0; i < capacity; i++) {
+      let current = this.buckets[i][0];
+      while (current) {
+        valuesArray.push(current.value);
+        current = current.next;
+      }
+    }
+    return valuesArray;
+  }
+
+  entries() {
+    let entriesArray = [];
+    for (let i = 0; i < capacity; i++) {
+      let current = this.buckets[i][0];
+      while (current) {
+        entriesArray.push([current.key, current.value]);
+        current = current.next;
+      }
+    }
+    return entriesArray;
+  }
 }
 
 const test = new HashMap();
-test.set('apple', 'red')
-test.set('banana', 'yellow')
-test.set('carrot', 'orange')
-test.set('dog', 'brown')
-test.set('elephant', 'gray')
-test.set('frog', 'green')
-test.set('grape', 'purple')
-test.set('hat', 'black')
-test.set('ice cream', 'white')
-test.set('jacket', 'blue')
-test.set('kite', 'pink')
-test.set('lion', 'golden')
-test.set('lion', 'edited')
+test.set('apple', 'red');
+test.set('banana', 'yellow');
+test.set('carrot', 'orange');
+test.set('dog', 'brown');
+test.set('elephant', 'gray');
+test.set('frog', 'green');
+test.set('grape', 'purple');
+test.set('hat', 'black');
+test.set('ice cream', 'white');
+test.set('jacket', 'blue');
+test.set('kite', 'pink');
+test.set('lion', 'golden');
+test.set('lion', 'edited');
+// test.set('moon', 'silver');
 
 console.log(`the value of the "key" hat is ${test.get('hat')}`); // should return black
 console.log(`the value of the "key" rock is ${test.get('rock')}`); // should return null
@@ -148,6 +190,14 @@ console.log(`the hash map has the key rock: ${test.has('rock')}`); // should ret
 console.log(`remove node with the key elephant ${test.remove('elephant')}`); // first node in a linked list
 console.log(`remove node with the key lion ${test.remove('lion')}`); // second node in a linked list
 console.log(`remove node with the key rock ${test.remove('rock')}`); // should return false
-console.log(`the total keys stored in the hash map is ${test.length}`); // should return false
-
+console.log(`the total number of keys stored in the hash map is ${test.length}`); // should return 10
+console.log(test.keys());
+// console.log(`the total keys stored in the hash map is ${test.keys()}`); // should return all keys
+console.log(test.values());
+// console.log(`the total values stored in the hash map is ${test.values()}`); // should return all keys
+console.log(test.entries());
+// console.log(`the total key value pairs stored in the hash map is ${test.entries()}`); // should return all keys
+// test.clear();
+// console.log(`the total keys stored in the hash map is after using test.clear ${test.length}`); // should return 0
+console.log(test.loadFactor());
 console.log(test);
