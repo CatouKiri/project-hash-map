@@ -46,7 +46,7 @@ class HashMap {
     }
 
     while (current) {
-      if(current.key === key) { // if key is already existing, update value
+      if(current.key === key) { // if key is existing, update value
         current.value = value;
         return;
       }
@@ -65,7 +65,7 @@ class HashMap {
     let current = this.buckets[index][0];
 
     while (current) {
-      if(current.key === key) { // if key is already existing, return value
+      if(current.key === key) { // if key is existing, return value
         return current.value;
       }
 
@@ -75,9 +75,47 @@ class HashMap {
     return null; // if key doesn't exist, return null
   }
 
-  // has(key)
-  // remove(key)
-  // length()
+  has(key) {
+    const index = this.hash(key);
+    let current = this.buckets[index][0];
+
+    while (current) {
+      if(current.key === key) { // if key is existing, return true
+        return true;
+      }
+
+      current = current.next;
+    }
+
+    return false; // if key doesn't exist, return false
+  }
+
+  remove(key) {
+    const index = this.hash(key);
+    let current = this.buckets[index][0];
+    let prev = null;
+
+    while (current) {
+        if (current.key === key) { // if key is existing
+            if (prev === null) { // first node
+                this.buckets[index][0] = current.next; // set bucket to null or next node
+            } else { // remove middle or last node
+                prev.next = current.next;
+            }
+            return true;
+        }
+        // Move to the next node
+        prev = current;
+        current = current.next;
+    }
+
+    return false; // If key doesn't exist
+  }
+
+  length() {
+
+  }
+
   // clear()
   // keys()
   // values()
@@ -100,7 +138,12 @@ test.set('lion', 'golden')
 test.set('lion', 'edited')
 
 console.log(test);
-console.log(`the value of the "key" hat is ${test.get('hat')}`);
-console.log(`the value of the "key" rock is ${test.get('rock')}`);
-// console.log(`the hash map has the key carrot: ${test.has('carrot')}`);
-// console.log(`the hash map has the key rock: ${test.has('rock')}`);
+console.log(`the value of the "key" hat is ${test.get('hat')}`); // should return black
+console.log(`the value of the "key" rock is ${test.get('rock')}`); // should return null
+console.log(`the hash map has the key carrot: ${test.has('carrot')}`); // should return true
+console.log(`the hash map has the key rock: ${test.has('rock')}`); // should return false
+console.log(`remove node with the key elephant ${test.remove('elephant')}`); // first node in a linked list
+console.log(`remove node with the key lion ${test.remove('lion')}`); // second node in a linked list
+console.log(`remove node with the key rock ${test.remove('rock')}`); // should return false
+
+console.log(test);
