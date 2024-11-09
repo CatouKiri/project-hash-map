@@ -12,6 +12,7 @@ class Node {
 class HashMap {
   constructor() {
     this.buckets = new Array(capacity);
+    this.length = 0;
     for (let i = 0; i < capacity; i++) {
       this.buckets[i] = [];
     }
@@ -42,6 +43,7 @@ class HashMap {
 
     if (!current) { // check if bucket is empty
       bucket.push(newNode);
+      this.length++;
       return;
     }
 
@@ -53,6 +55,7 @@ class HashMap {
 
       if(!current.next) { // if bucket is not empty, push new node to next linked list
         current.next = newNode;
+        this.length++;
         return;
       }
 
@@ -102,6 +105,7 @@ class HashMap {
             } else { // remove middle or last node
                 prev.next = current.next;
             }
+            this.length--;
             return true;
         }
         // Move to the next node
@@ -113,7 +117,7 @@ class HashMap {
   }
 
   length() {
-
+    return this.length;
   }
 
   // clear()
@@ -137,7 +141,6 @@ test.set('kite', 'pink')
 test.set('lion', 'golden')
 test.set('lion', 'edited')
 
-console.log(test);
 console.log(`the value of the "key" hat is ${test.get('hat')}`); // should return black
 console.log(`the value of the "key" rock is ${test.get('rock')}`); // should return null
 console.log(`the hash map has the key carrot: ${test.has('carrot')}`); // should return true
@@ -145,5 +148,6 @@ console.log(`the hash map has the key rock: ${test.has('rock')}`); // should ret
 console.log(`remove node with the key elephant ${test.remove('elephant')}`); // first node in a linked list
 console.log(`remove node with the key lion ${test.remove('lion')}`); // second node in a linked list
 console.log(`remove node with the key rock ${test.remove('rock')}`); // should return false
+console.log(`the total keys stored in the hash map is ${test.length}`); // should return false
 
 console.log(test);
